@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="A client-specific IBM Bob academy for customer engineers, organized from beginner to advanced with role, SDLC, use-case, and product-feature learning views." name="description"/>
+<title>Client Bob Academy | Customer Engineer Learning Hub</title>
+<style>
+    :root {
+      --bg: #f4f4f4;
+      --surface: #ffffff;
+      --surface-2: #e8f0ff;
+      --ink: #161616;
+      --muted: #525252;
+      --line: #d6d6d6;
+      --blue: #0f62fe;
+      --blue-hover: #0043ce;
+      --navy: #001d6c;
+      --purple: #6929c4;
+      --green: #198038;
+      --orange: #ba4e00;
+      --shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--bg);
+      font-family: "IBM Plex Sans", Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+    a { color: inherit; }
+    button, input { font: inherit; }
+
+    .skip-link {
+      position: absolute;
+      left: -999px;
+      top: 0;
+      background: var(--surface);
+      padding: 10px 14px;
+      z-index: 1000;
+    }
+    .skip-link:focus { left: 12px; top: 12px; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(22, 22, 22, 0.96);
+      color: white;
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,.14);
+    }
+    .topbar-inner {
+      max-width: 1220px;
+      margin: 0 auto;
+      min-height: 64px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: -.02em;
+    }
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: var(--blue);
+      font-weight: 800;
+    }
+    .nav {
+      display: flex;
+      gap: 22px;
+      align-items: center;
+      font-size: 14px;
+    }
+    .nav a {
+      text-decoration: none;
+      color: #f4f4f4;
+    }
+    .nav a:hover, .nav a:focus { text-decoration: underline; }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      color: white;
+      background:
+        radial-gradient(circle at 78% 20%, rgba(69,137,255,.55), transparent 26%),
+        radial-gradient(circle at 92% 80%, rgba(190,149,255,.28), transparent 28%),
+        linear-gradient(135deg, #001141 0%, #001d6c 46%, #0043ce 100%);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: .16;
+      pointer-events: none;
+      background-image: linear-gradient(rgba(255,255,255,.18) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.18) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to left, black, transparent 72%);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 82px 24px 76px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(300px, .8fr);
+      gap: 54px;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      padding: 7px 11px;
+      border: 1px solid rgba(255,255,255,.35);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      background: rgba(255,255,255,.08);
+    }
+    .hero h1 {
+      margin: 0;
+      max-width: 760px;
+      font-size: clamp(44px, 7vw, 78px);
+      line-height: .98;
+      letter-spacing: -.055em;
+    }
+    .hero-copy {
+      max-width: 720px;
+      margin: 24px 0 0;
+      color: #e5f0ff;
+      font-size: clamp(18px, 2.2vw, 22px);
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 48px;
+      padding: 0 18px;
+      border: 1px solid transparent;
+      text-decoration: none;
+      font-weight: 650;
+      cursor: pointer;
+      transition: .18s ease;
+    }
+    .button.primary { background: white; color: var(--navy); }
+    .button.primary:hover { background: #e8f0ff; }
+    .button.secondary { border-color: rgba(255,255,255,.55); color: white; background: rgba(255,255,255,.06); }
+    .button.secondary:hover { background: rgba(255,255,255,.14); }
+    .button.blue { background: var(--blue); color: white; }
+    .button.blue:hover { background: var(--blue-hover); }
+    .button.ghost { border-color: var(--line); background: white; color: var(--ink); }
+    .button.ghost:hover { border-color: var(--ink); }
+
+    .hero-panel {
+      border: 1px solid rgba(255,255,255,.24);
+      background: rgba(0, 0, 0, .24);
+      padding: 26px;
+      border-radius: var(--radius);
+      box-shadow: 0 24px 60px rgba(0,0,0,.24);
+      backdrop-filter: blur(10px);
+    }
+    .hero-panel h2 { margin: 0 0 16px; font-size: 21px; }
+    .hero-panel ol { margin: 0; padding-left: 20px; color: #e5f0ff; }
+    .hero-panel li + li { margin-top: 10px; }
+    .update-note {
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,.2);
+      font-size: 13px;
+      color: #c6d8ff;
+    }
+
+    main { max-width: 1220px; margin: 0 auto; padding: 0 24px 72px; }
+    .section { padding-top: 76px; }
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 24px;
+      margin-bottom: 26px;
+    }
+    .section-heading h2 {
+      margin: 0;
+      font-size: clamp(30px, 4vw, 46px);
+      line-height: 1.05;
+      letter-spacing: -.035em;
+    }
+    .section-heading p { margin: 0; max-width: 610px; color: var(--muted); }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      border: 1px solid var(--line);
+      background: var(--surface);
+    }
+    .stat { padding: 24px; min-height: 138px; }
+    .stat + .stat { border-left: 1px solid var(--line); }
+    .stat strong { display: block; font-size: 34px; letter-spacing: -.04em; }
+    .stat span { color: var(--muted); font-size: 14px; }
+
+    .role-switcher {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      padding: 22px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .role-buttons { display: flex; flex-wrap: wrap; gap: 10px; }
+    .role-button {
+      border: 1px solid var(--line);
+      background: white;
+      min-height: 42px;
+      padding: 0 15px;
+      cursor: pointer;
+      font-weight: 650;
+    }
+    .role-button[aria-selected="true"] { color: white; background: var(--ink); border-color: var(--ink); }
+    .role-panel {
+      display: grid;
+      grid-template-columns: .8fr 1.2fr;
+      gap: 32px;
+      padding-top: 26px;
+    }
+    .role-panel[hidden] { display: none; }
+    .role-panel h3 { margin: 0 0 10px; font-size: 25px; }
+    .role-panel p { color: var(--muted); margin: 0; }
+    .role-panel ul { margin: 0; padding-left: 20px; }
+    .role-panel li + li { margin-top: 8px; }
+
+    .path {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+    .path::before {
+      content: "";
+      position: absolute;
+      top: 30px;
+      bottom: 30px;
+      left: 31px;
+      width: 2px;
+      background: #a6c8ff;
+    }
+    .path-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: 64px minmax(0, 1fr) minmax(260px, .58fr);
+      gap: 22px;
+      align-items: start;
+      padding: 24px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: 0 7px 20px rgba(0,0,0,.045);
+    }
+    .step-number {
+      position: relative;
+      z-index: 2;
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      margin-left: -2px;
+      border-radius: 50%;
+      color: white;
+      background: var(--blue);
+      font-weight: 800;
+    }
+    .path-card h3 { margin: 0 0 8px; font-size: 23px; }
+    .path-card p { margin: 0; color: var(--muted); }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+    .tag {
+      display: inline-flex;
+      border-radius: 999px;
+      padding: 4px 9px;
+      font-size: 12px;
+      font-weight: 650;
+      background: var(--surface-2);
+      color: var(--navy);
+    }
+    .path-links { display: grid; gap: 8px; }
+    .resource-link {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+      text-decoration: none;
+    }
+    .resource-link:hover .resource-title { text-decoration: underline; }
+    .resource-type { color: var(--muted); font-size: 12px; white-space: nowrap; }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 22px;
+    }
+    .video-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+    .video-frame {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      background: #000;
+    }
+    .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .video-body { padding: 20px; }
+    .video-body h3 { margin: 0 0 8px; font-size: 21px; line-height: 1.25; }
+    .video-body p { margin: 0; color: var(--muted); }
+    .video-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+
+    .lab-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .lab-card {
+      display: flex;
+      flex-direction: column;
+      padding: 22px;
+      min-height: 300px;
+      border-top: 4px solid var(--blue);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+    .lab-card:nth-child(2) { border-color: var(--purple); }
+    .lab-card:nth-child(3) { border-color: var(--green); }
+    .lab-card:nth-child(4) { border-color: var(--orange); }
+    .lab-duration { font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+    .lab-card h3 { margin: 12px 0 8px; font-size: 21px; }
+    .lab-card p { color: var(--muted); }
+    .lab-card ol { padding-left: 20px; margin-bottom: 0; }
+    .lab-card .tag-row { margin-top: 12px; }
+    .lab-card a { margin-top: auto; padding-top: 18px; font-weight: 700; color: var(--blue-hover); text-decoration: none; }
+    .lab-card a:hover { text-decoration: underline; }
+
+    .library-tools {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) auto;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .search-box {
+      min-height: 50px;
+      width: 100%;
+      border: 1px solid #8d8d8d;
+      background: white;
+      padding: 0 16px;
+      outline: none;
+    }
+    .search-box:focus { outline: 2px solid var(--blue); outline-offset: -2px; }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; }
+    .filter-button {
+      min-height: 50px;
+      padding: 0 14px;
+      background: white;
+      border: 1px solid var(--line);
+      cursor: pointer;
+    }
+    .filter-button.active { background: var(--blue); color: white; border-color: var(--blue); }
+
+    .resource-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
+    .resource-card {
+      display: flex;
+      flex-direction: column;
+      min-height: 215px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: 10px;
+    }
+    .resource-card[hidden] { display: none; }
+    .resource-card .kicker { color: var(--blue); text-transform: uppercase; letter-spacing: .08em; font-size: 12px; font-weight: 750; }
+    .resource-card h3 { margin: 10px 0 8px; font-size: 19px; line-height: 1.28; }
+    .resource-card p { margin: 0 0 18px; color: var(--muted); font-size: 14px; }
+    .resource-card a { margin-top: auto; font-weight: 700; color: var(--blue-hover); text-decoration: none; }
+    .resource-card a:hover { text-decoration: underline; }
+    .empty-state { display: none; padding: 28px; background: white; border: 1px dashed var(--line); color: var(--muted); }
+
+    .governance {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 26px;
+      padding: 34px;
+      color: white;
+      background: var(--ink);
+      border-radius: var(--radius);
+    }
+    .governance h2 { margin: 0 0 12px; font-size: 32px; letter-spacing: -.03em; }
+    .governance p { color: #c6c6c6; }
+    .checklist { display: grid; gap: 10px; }
+    .check-item { padding: 13px 14px; background: #262626; border-left: 3px solid #78a9ff; }
+
+    footer { color: white; background: #161616; }
+    .footer-inner { max-width: 1220px; margin: 0 auto; padding: 34px 24px; display: flex; justify-content: space-between; gap: 24px; align-items: center; }
+    .footer-inner p { margin: 0; color: #c6c6c6; font-size: 13px; }
+    .footer-links { display: flex; gap: 18px; font-size: 13px; }
+
+
+
+    .outcome-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .outcome-card {
+      min-height: 285px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-top: 4px solid var(--blue);
+      background: var(--surface);
+      box-shadow: 0 7px 20px rgba(0,0,0,.045);
+    }
+    .outcome-number { display: block; color: var(--blue); font-weight: 800; font-size: 13px; letter-spacing: .08em; }
+    .outcome-card h3 { margin: 14px 0 8px; font-size: 21px; }
+    .outcome-card p { color: var(--muted); }
+    .outcome-card strong { display: block; margin-top: 18px; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+    .outcome-card strong + span { display: block; margin-top: 6px; color: var(--muted); font-size: 14px; }
+
+    .curriculum-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .curriculum-card {
+      display: block;
+      min-height: 230px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      text-decoration: none;
+      transition: transform .18s ease, border-color .18s ease;
+    }
+    .curriculum-card:hover { transform: translateY(-3px); border-color: var(--blue); }
+    .curriculum-card.primary-route { color: white; background: var(--navy); border-color: var(--navy); }
+    .curriculum-card span { display: block; color: var(--blue); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+    .curriculum-card.primary-route span { color: #a6c8ff; }
+    .curriculum-card h3 { margin: 14px 0 8px; font-size: 22px; }
+    .curriculum-card p { margin: 0; color: var(--muted); }
+    .curriculum-card.primary-route p { color: #d0e2ff; }
+    .sdlc-map {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0,1fr));
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+    }
+    .sdlc-step { min-height: 150px; padding: 18px; }
+    .sdlc-step + .sdlc-step { border-left: 1px solid var(--line); }
+    .sdlc-step strong { display: block; margin-bottom: 8px; color: var(--navy); }
+    .sdlc-step span { color: var(--muted); font-size: 13px; }
+
+    .content-meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 18px;
+      margin: 16px 0 0;
+      padding: 14px;
+      border: 1px solid var(--line);
+      background: #f9f9f9;
+    }
+    .content-meta.compact { margin: 16px 0; }
+    .content-meta div { min-width: 0; }
+    .content-meta dt { margin: 0; color: var(--muted); font-size: 11px; font-weight: 750; text-transform: uppercase; letter-spacing: .06em; }
+    .content-meta dd { margin: 3px 0 0; font-size: 13px; line-height: 1.35; }
+    .resource-meta {
+      display: grid;
+      gap: 5px;
+      margin: 2px 0 18px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+    .resource-meta b { color: var(--ink); }
+
+    @media (max-width: 980px) {
+      .hero-inner, .role-panel, .governance { grid-template-columns: 1fr; }
+      .stat-grid { grid-template-columns: repeat(2,1fr); }
+      .stat:nth-child(3) { border-left: none; border-top: 1px solid var(--line); }
+      .stat:nth-child(4) { border-top: 1px solid var(--line); }
+      .path-card { grid-template-columns: 64px 1fr; }
+      .path-links { grid-column: 2; }
+      .lab-grid { grid-template-columns: repeat(2,1fr); }
+      .resource-grid { grid-template-columns: repeat(2,1fr); }
+      .outcome-grid, .curriculum-grid { grid-template-columns: repeat(2,1fr); }
+      .sdlc-map { grid-template-columns: repeat(2,1fr); }
+      .sdlc-step:nth-child(odd) { border-left: 0; }
+      .sdlc-step { border-top: 1px solid var(--line); }
+    }
+    @media (max-width: 700px) {
+      .topbar-inner { min-height: 58px; }
+      .nav { display: none; }
+      .hero-inner { padding-top: 58px; }
+      .hero h1 { font-size: 48px; }
+      .section { padding-top: 58px; }
+      .section-heading { align-items: start; flex-direction: column; }
+      .stat-grid, .video-grid, .lab-grid, .resource-grid, .outcome-grid, .curriculum-grid { grid-template-columns: 1fr; }
+      .sdlc-map { grid-template-columns: 1fr; }
+      .sdlc-step + .sdlc-step { border-left: 0; border-top: 1px solid var(--line); }
+      .content-meta { grid-template-columns: 1fr; }
+      .stat + .stat { border-left: 0; border-top: 1px solid var(--line); }
+      .path::before { left: 26px; }
+      .path-card { grid-template-columns: 50px 1fr; padding: 19px; gap: 14px; }
+      .path-links { grid-column: 2; }
+      .library-tools { grid-template-columns: 1fr; }
+      .footer-inner { flex-direction: column; align-items: start; }
+    }
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="topbar">
+<div class="topbar-inner">
+<a aria-label="IBM Bob Learning Hub home" class="brand" href="#top">
+<span class="brand-mark">B</span>
+<span>Client Bob Academy</span>
+</a>
+<nav aria-label="Primary navigation" class="nav"><a href="#outcomes">Outcomes</a><a href="#curriculum">Curriculum</a><a href="#roles">Roles</a><a href="#path">Learning path</a><a href="#tutorials">Use cases</a><a href="#library">Resources</a></nav>
+</div>
+</header>
+<section class="hero" id="top">
+    
+
+    <!-- EDITABLE: Client academy name, audience, and hero positioning -->
+<div class="hero-inner">
+<div>
+<div class="eyebrow">Client-specific Bob Academy · For customer engineers starting with Bob</div>
+<h1>Start using IBM Bob.<br/>Build confidence from first task to enterprise rollout.</h1>
+<p class="hero-copy">A structured client learning experience that helps customer engineers understand Bob, begin using it safely, become productive in daily delivery, standardize team practices, and prepare for enterprise adoption.</p>
+<div class="hero-actions">
+<a class="button primary" href="#path">Start the learning path →</a>
+<a class="button secondary" href="https://bob.ibm.com/docs/ide" rel="noopener" target="_blank">Open official docs ↗</a>
+</div>
+</div>
+<aside aria-label="Recommended first steps" class="hero-panel">
+<h2>Your first 60 minutes</h2>
+<ol><li>Understand where Bob supports your engineering workflow.</li><li>Confirm access and open a safe, non-production repository.</li><li>Initialize project context and learn Plan, Agent, and Ask modes.</li><li>Complete one small task with explicit review and approval checkpoints.</li></ol>
+<div class="update-note">Client Bob Academy curated from official IBM Bob documentation, IBM Developer content, the IBM/bob-demo GitHub repository, and selected YouTube resources. Last content review: July 2026.</div>
+</aside>
+</div>
+</section>
+<main id="main">
+<section aria-labelledby="overview-title" class="section">
+<div class="section-heading">
+<div><h2 id="overview-title">A guided academy for engineers beginning with Bob</h2></div>
+<p>Start with a beginner-to-advanced learning sequence, then explore the same content by role, SDLC phase, use case, or Bob product feature.</p>
+</div>
+<div aria-label="Hub summary" class="stat-grid">
+<div class="stat"><strong>5</strong><span>defined learning outcomes</span></div>
+<div class="stat"><strong>6</strong><span>beginner-to-advanced stages</span></div>
+<div class="stat"><strong>11</strong><span>hands-on tutorial use cases</span></div>
+<div class="stat"><strong>30+</strong><span>official learning resources</span></div>
+</div>
+</section>
+<section aria-labelledby="outcomes-title" class="section" id="outcomes">
+<!-- EDITABLE: Primary academy outcomes -->
+<div class="section-heading">
+<div><h2 id="outcomes-title">Learning outcomes</h2></div>
+<p>The academy is designed for customer engineers who are new to Bob and need a practical path from orientation to governed team adoption.</p>
+</div>
+<div class="outcome-grid">
+<article class="outcome-card"><span class="outcome-number">01</span><h3>Understand Bob</h3><p>Explain Bob’s role, core capabilities, human-control model, and place across the software-delivery lifecycle.</p><strong>Exit evidence:</strong><span>Can identify appropriate Bob use cases and boundaries.</span></article>
+<article class="outcome-card"><span class="outcome-number">02</span><h3>Begin using Bob</h3><p>Set up Bob, initialize repository context, select the right mode, and complete a safe first engineering task.</p><strong>Exit evidence:</strong><span>Completes one reviewed task in a non-production repository.</span></article>
+<article class="outcome-card"><span class="outcome-number">03</span><h3>Become productive</h3><p>Use Bob for understanding, planning, coding, testing, documentation, review, and modernization work.</p><strong>Exit evidence:</strong><span>Applies Bob repeatedly in a daily engineering workflow.</span></article>
+<article class="outcome-card"><span class="outcome-number">04</span><h3>Standardize team usage</h3><p>Turn successful practices into shared context, rules, modes, skills, templates, and approval checkpoints.</p><strong>Exit evidence:</strong><span>Publishes at least one reusable team asset.</span></article>
+<article class="outcome-card"><span class="outcome-number">05</span><h3>Prepare for enterprise rollout</h3><p>Apply security, access, governance, measurement, support, and adoption practices required to scale responsibly.</p><strong>Exit evidence:</strong><span>Contributes to a documented team or enterprise rollout plan.</span></article>
+</div>
+</section><section aria-labelledby="curriculum-title" class="section" id="curriculum">
+<!-- EDITABLE: Curriculum organization -->
+<div class="section-heading">
+<div><h2 id="curriculum-title">How the curriculum is organized</h2></div>
+<p>The primary route is beginner to advanced. Secondary views help learners find the same content based on the work they perform and the outcome they need.</p>
+</div>
+<div class="curriculum-grid">
+<a class="curriculum-card primary-route" href="#path"><span>Primary route</span><h3>Beginner → advanced</h3><p>Follow six progressive stages from product orientation and first use through team standardization and enterprise rollout.</p></a>
+<a class="curriculum-card" href="#sdlc-map"><span>Work view</span><h3>SDLC phases</h3><p>Find resources for understand and plan, design, develop, test, review, deploy, operate, and modernize.</p></a>
+<a class="curriculum-card" href="#roles"><span>Persona view</span><h3>Roles</h3><p>Use recommended routes for software engineers, IBM Z and legacy engineers, business analysts, architects, and leaders.</p></a>
+<a class="curriculum-card" href="#tutorials"><span>Application view</span><h3>Use cases</h3><p>Practice with public IBM demos for skills, DevOps, modernization, architecture, MCP, documentation, and AI integration.</p></a>
+<a class="curriculum-card" href="#library"><span>Capability view</span><h3>Product features</h3><p>Search Bob capabilities such as context, modes, code actions, reviews, rules, skills, MCP, and security.</p></a>
+</div>
+<div aria-label="Bob learning resources by SDLC phase" class="sdlc-map" id="sdlc-map">
+<div class="sdlc-step"><strong>1. Understand &amp; Plan</strong><span>Repository orientation, requirements, acceptance criteria, architecture discovery</span></div>
+<div class="sdlc-step"><strong>2. Design</strong><span>Solution options, interfaces, data flow, standards, risk and dependency analysis</span></div>
+<div class="sdlc-step"><strong>3. Develop</strong><span>Code generation, transformation, explanation, refactoring, reusable skills</span></div>
+<div class="sdlc-step"><strong>4. Build &amp; Test</strong><span>Test generation, CI/CD, automation, validation, security checks</span></div>
+<div class="sdlc-step"><strong>5. Review &amp; Deliver</strong><span>Code review, documentation, quality findings, commits and pull requests</span></div>
+<div class="sdlc-step"><strong>6. Modernize &amp; Scale</strong><span>Legacy understanding, modernization, MCP integration, governance and adoption</span></div>
+</div>
+</section>
+    <!-- EDITABLE: Role routes and role-specific recommendations -->
+<section aria-labelledby="role-title" class="section" id="roles">
+<div class="section-heading">
+<div><h2 id="role-title">Choose a role-based route</h2></div>
+<p>The academy is primarily for customer engineers starting with Bob. Role views provide a faster route to relevant capabilities and use cases without replacing the core beginner-to-advanced sequence.</p>
+</div>
+<div class="role-switcher">
+<div aria-label="Role learning views" class="role-buttons" role="tablist">
+<button aria-controls="software-panel" aria-selected="true" class="role-button" id="software-tab" role="tab">Software Engineer</button>
+<button aria-controls="legacy-panel" aria-selected="false" class="role-button" id="legacy-tab" role="tab">IBM Z / Legacy Engineer</button>
+<button aria-controls="ba-panel" aria-selected="false" class="role-button" id="ba-tab" role="tab">Business Analyst / Product / Design</button>
+<button aria-controls="platform-panel" aria-selected="false" class="role-button" id="platform-tab" role="tab">Architect / DevOps / Platform</button>
+<button aria-controls="leader-panel" aria-selected="false" class="role-button" id="leader-tab" role="tab">Engineering Leader / Enablement</button>
+</div>
+<div aria-labelledby="software-tab" class="role-panel" id="software-panel" role="tabpanel">
+<div><h3>Build, test, review, and modernize applications</h3><p>Focus on project context, effective engineering tasks, code generation, testing, reviews, reusable skills, AI integration, and safe human approval.</p></div>
+<ul><li>Complete stages 1–5 of the guided path.</li><li>Start with Getting Started with Skills, Using Java with Skills, and Quarkus AI Integration.</li><li>Progress to architecture testing and application-modernization tutorials.</li></ul>
+</div>
+<div aria-labelledby="legacy-tab" class="role-panel" hidden="" id="legacy-panel" role="tabpanel">
+<div><h3>Understand and modernize complex legacy systems</h3><p>Focus on code understanding, architecture recovery, knowledge transfer, modernization planning, automated validation, and exposing existing capabilities through modern interfaces.</p></div>
+<ul><li>Prioritize Automated Architecture Tests, Modernize EJB to Quarkus, Legacy to MCP, and Grounded Docs.</li><li>Use Bob to document dependencies, business logic, risks, and modernization options before changing code.</li><li>The public demo repository currently emphasizes legacy Java patterns rather than a z/OS-specific tutorial; apply the same learning pattern to IBM Z workloads with appropriate tools and controls.</li></ul>
+</div>
+<div aria-labelledby="ba-tab" class="role-panel" hidden="" id="ba-panel" role="tabpanel">
+<div><h3>Turn business context into structured engineering inputs</h3><p>Focus on understanding existing systems, organizing requirements and acceptance criteria, grounding Bob with internal documentation, and improving handoffs among business, product, design, and engineering teams.</p></div>
+<ul><li>Start with Grounded Docs, Bob Modes, and the AI-first product-development video.</li><li>Use Bob to create process summaries, user stories, acceptance criteria, design questions, and traceable handoff artifacts.</li><li>The current GitHub repository is engineering-heavy, so these tutorials are adjacent patterns rather than dedicated BA or design exercises.</li></ul>
+</div>
+<div aria-labelledby="platform-tab" class="role-panel" hidden="" id="platform-panel" role="tabpanel">
+<div><h3>Standardize architecture, delivery, and platform workflows</h3><p>Focus on AGENTS.md, custom modes, rules, skills, CI/CD generation, architecture tests, MCP integrations, security boundaries, and reusable platform patterns.</p></div>
+<ul><li>Prioritize Ansible DevOps, Tekton DevOps, Automated Architecture Tests, Bob Modes, and Legacy to MCP.</li><li>Turn approved standards into version-controlled Bob context and reusable skills.</li><li>Define permissions, security controls, and validation checkpoints before scaling.</li></ul>
+</div>
+<div aria-labelledby="leader-tab" class="role-panel" hidden="" id="leader-panel" role="tabpanel">
+<div><h3>Scale adoption around measurable engineering outcomes</h3><p>Use the learning hub as a curriculum and connect enablement to productivity, modernization, quality, rework, governance, and adoption metrics.</p></div>
+<ul><li>Review the overview videos and the full GitHub demo catalogue.</li><li>Select a small set of role-relevant tutorials for onboarding and champion programs.</li><li>Measure cycle time, quality, rework, review effort, modernization throughput, and active adoption—not prompt volume.</li></ul>
+</div>
+</div>
+</section>
+<section aria-labelledby="path-title" class="section" id="path">
+<div class="section-heading">
+<div><h2 id="path-title">Beginner-to-advanced learning path</h2></div>
+<p>Use this as the primary curriculum. Each stage includes source, difficulty, expected learning time, and prerequisites so learners know what to complete next.</p>
+</div>
+<div class="path">
+<article class="path-card">
+<div class="step-number">1</div>
+<div>
+<h3>Discover Bob</h3>
+<p>Understand Bob as an AI software-development partner that works across planning, implementation, testing, review, documentation, modernization, and delivery workflows.</p>
+<div class="tag-row"><span class="tag">15–30 min</span><span class="tag">All roles</span><span class="tag">Foundation</span></div><dl class="content-meta"><div><dt>Source</dt><dd>IBM Bob website, product overview, and YouTube</dd></div><div><dt>Difficulty</dt><dd>Beginner</dd></div><div><dt>Duration</dt><dd>15–30 min</dd></div><div><dt>Prerequisites</dt><dd>None</dd></div></dl>
+</div>
+<div class="path-links">
+<a class="resource-link" href="https://bob.ibm.com/" rel="noopener" target="_blank"><span class="resource-title">IBM Bob overview</span><span class="resource-type">Website ↗</span></a>
+<a class="resource-link" href="https://www.ibm.com/products/ai-coding-agent" rel="noopener" target="_blank"><span class="resource-title">Product capabilities and use cases</span><span class="resource-type">Overview ↗</span></a>
+<a class="resource-link" href="https://www.youtube.com/watch?v=Mdbq1dD6Yuo" rel="noopener" target="_blank"><span class="resource-title">Meet Bob: AI-powered IDE</span><span class="resource-type">Video ↗</span></a>
+</div>
+</article>
+<article class="path-card">
+<div class="step-number">2</div>
+<div>
+<h3>Set up and orient</h3>
+<p>Install Bob, open a real repository, initialize persistent project context, and learn how the interface, approvals, modes, tools, and conversations work together.</p>
+<div class="tag-row"><span class="tag">30–60 min</span><span class="tag">Developers</span><span class="tag">Hands-on</span></div><dl class="content-meta"><div><dt>Source</dt><dd>Official IBM Bob documentation</dd></div><div><dt>Difficulty</dt><dd>Beginner</dd></div><div><dt>Duration</dt><dd>30–60 min</dd></div><div><dt>Prerequisites</dt><dd>Bob access and a safe sample repository</dd></div></dl>
+</div>
+<div class="path-links">
+<a class="resource-link" href="https://bob.ibm.com/docs/ide" rel="noopener" target="_blank"><span class="resource-title">Welcome and getting started</span><span class="resource-type">Docs ↗</span></a>
+<a class="resource-link" href="https://bob.ibm.com/docs/ide/tutorials/introduction" rel="noopener" target="_blank"><span class="resource-title">Tutorial series introduction</span><span class="resource-type">Tutorial ↗</span></a>
+<a class="resource-link" href="https://bob.ibm.com/docs/ide/tutorials/start-a-project" rel="noopener" target="_blank"><span class="resource-title">Use /init and AGENTS.md</span><span class="resource-type">Tutorial ↗</span></a>
+</div>
+</article>
+<article class="path-card">
+<div class="step-number">3</div>
+<div>
+<h3>Work effectively with Bob</h3>
+<p>Write outcome-oriented tasks, select the right mode, provide relevant context, review planned actions, and keep humans in control of consequential changes.</p>
+<div class="tag-row"><span class="tag">45 min</span><span class="tag">Core skill</span><span class="tag">Best practices</span></div><dl class="content-meta"><div><dt>Source</dt><dd>Official IBM Bob documentation</dd></div><div><dt>Difficulty</dt><dd>Beginner</dd></div><div><dt>Duration</dt><dd>45 min</dd></div><div><dt>Prerequisites</dt><dd>Stage 2 and initialized repository context</dd></div></dl>
+</div>
+<div class="path-links">
+<a class="resource-link" href="https://bob.ibm.com/docs/ide/getting-started/best-practices" rel="noopener" target="_blank"><span class="resource-title">Best practices</span><span class="resource-type">Docs ↗</span></a>
+<a class="resource-link" href="https://bob.ibm.com/docs/ide/features/modes" rel="noopener" target="_blank"><span class="resource-title">Plan, Agent, and Ask modes</span><span class="resource-type">Docs ↗</span></a>
+<a class="resource-link" href="https://bob.ibm.com/docs/ide/tutorials/write-effective-prompts" rel="noopener" target="_blank"><span class="resource-title">Write effective prompts</span><span class="resource-type">Tutorial ↗</span></a>
+</div>
+</article>
+<article class="path-card">
+<div class="step-number">4</div>
+<div>
+<h3>Apply Bob to real use cases</h3>
+<p>Move from feature learning to practical outcomes in software development, modernization, knowledge transfer, DevOps, architecture validation, AI integration, and enterprise tooling.</p>
+<div class="tag-row"><span class="tag">10–30 min each</span><span class="tag">Role-based</span><span class="tag">Hands-on</span></div><dl class="content-meta"><div><dt>Source</dt><dd>IBM Bob documentation and IBM/bob-demo</dd></div><div><dt>Difficulty</dt><dd>Intermediate</dd></div><div><dt>Duration</dt><dd>1–2 hrs</dd></div><div><dt>Prerequisites</dt><dd>Stages 1–3, a working branch, and project tests</dd></div></dl>
+</div>
+<div class="path-links">
+<a class="resource-link" href="https://github.com/IBM/bob-demo" rel="noopener" target="_blank"><span class="resource-title">Browse the IBM Bob demo repository</span><span class="resource-type">GitHub ↗</span></a>
+<a class="resource-link" href="https://github.com/IBM/bob-demo/tree/main/modernize-ejb-to-quarkus" rel="noopener" target="_blank"><span class="resource-title">Modernize EJB to Quarkus</span><span class="resource-type">Tutorial ↗</span></a>
+<a class="resource-link" href="https://github.com/IBM/bob-demo/tree/main/tekton-devops" rel="noopener" target="_blank"><span class="resource-title">Generate a Tekton CI pipeline</span><span class="resource-type">Tutorial ↗</span></a>
+<a class="resource-link" href="https://github.com/IBM/bob-demo/tree/main/indexing-documentation" rel="noopener" target="_blank"><span class="resource-title">Ground Bob with internal documentation</span><span class="resource-type">Tutorial ↗</span></a>
+</div>
+</article>
+<article class="path-card">
+<div class="step-number">5</div>
+<div>
+<h3>Customize for your team</h3>
+<p>Turn proven practices into persistent context, project rules, specialized modes, reusable skills, tool permissions, and shared workflows.</p>
+<div class="tag-row"><span class="tag">1–2 hrs</span><span class="tag">Architect</span><span class="tag">Team scale</span></div><dl class="content-meta"><div><dt>Source</dt><dd>IBM Bob documentation and IBM/bob-demo</dd></div><div><dt>Difficulty</dt><dd>Intermediate–Advanced</dd></div><div><dt>Duration</dt><dd>1–2 hrs</dd></div><div><dt>Prerequisites</dt><dd>Stage 4 and documented team standards</dd></div></dl>
+</div>
+<div class="path-links">
+<a class="resource-link" href="https://bob.ibm.com/docs/ide/configuration/custom-modes" rel="noopener" target="_blank"><span class="resource-title">Create custom modes</span><span class="resource-type">Docs ↗</span></a>
+<a class="resource-link" href="https://bob.ibm.com/docs/ide/configuration/rules" rel="noopener" target="_blank"><span class="resource-title">Apply custom rules</span><span class="resource-type">Docs ↗</span></a>
+<a class="resource-link" href="https://bob.ibm.com/docs/ide/features/skills" rel="noopener" target="_blank"><span class="resource-title">Build reusable skills</span><span class="resource-type">Docs ↗</span></a>
+<a class="resource-link" href="https://www.youtube.com/watch?v=MzmcVd2DJmk" rel="noopener" target="_blank"><span class="resource-title">Modes, MCP servers, and rules</span><span class="resource-type">Video ↗</span></a>
+</div>
+</article>
+<article class="path-card">
+<div class="step-number">6</div>
+<div>
+<h3>Extend and govern</h3>
+<p>Connect approved external tools with MCP, use delegated access and audit controls, and apply Bob to enterprise scenarios such as agents, security, modernization, and integration.</p>
+<div class="tag-row"><span class="tag">Advanced</span><span class="tag">Enterprise</span><span class="tag">Security</span></div><dl class="content-meta"><div><dt>Source</dt><dd>IBM Bob documentation and IBM Developer</dd></div><div><dt>Difficulty</dt><dd>Advanced</dd></div><div><dt>Duration</dt><dd>2+ hrs</dd></div><div><dt>Prerequisites</dt><dd>Stages 1–5 and an approved enterprise sandbox</dd></div></dl>
+</div>
+<div class="path-links">
+<a class="resource-link" href="https://bob.ibm.com/docs/ide/configuration/mcp/understanding-mcp" rel="noopener" target="_blank"><span class="resource-title">Understand MCP</span><span class="resource-type">Docs ↗</span></a>
+<a class="resource-link" href="https://bob.ibm.com/docs/ide/configuration/mcp/mcp-in-bob" rel="noopener" target="_blank"><span class="resource-title">Use MCP in Bob</span><span class="resource-type">Docs ↗</span></a>
+<a class="resource-link" href="https://bob.ibm.com/docs/ide/security/bob-security-guidance" rel="noopener" target="_blank"><span class="resource-title">Security guidance</span><span class="resource-type">Docs ↗</span></a>
+<a class="resource-link" href="https://developer.ibm.com/tutorials/build-agents-mcp-tools-watsonx-orchestrate-using-bob/" rel="noopener" target="_blank"><span class="resource-title">Build agents and MCP tools</span><span class="resource-type">Lab ↗</span></a>
+</div>
+</article>
+</div>
+</section>
+<section aria-labelledby="videos-title" class="section" id="videos">
+<div class="section-heading">
+<div><h2 id="videos-title">Watch Bob in action</h2></div>
+<p>Use videos as demonstrations, not as standalone completion. Reproduce the workflow in a safe repository and record what you learned.</p>
+</div>
+<div class="video-grid">
+<article class="video-card">
+<div class="video-frame"><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" loading="lazy" src="https://www.youtube-nocookie.com/embed/Mdbq1dD6Yuo" title="Meet Bob: An AI-Powered IDE for Modern Software Development"></iframe></div>
+<div class="video-body"><h3>Meet Bob: AI-powered IDE</h3><p>A concise orientation to Bob's IDE experience and its role as a development partner.</p><dl class="content-meta compact"><div><dt>Source</dt><dd>IBM Bob YouTube</dd></div><div><dt>Difficulty</dt><dd>Beginner</dd></div><div><dt>Duration</dt><dd>~15 min learning block</dd></div><div><dt>Prerequisites</dt><dd>None</dd></div></dl><div class="video-meta"><span class="tag">Overview</span><span class="tag">Beginner</span></div></div>
+</article>
+<article class="video-card">
+<div class="video-frame"><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" loading="lazy" src="https://www.youtube-nocookie.com/embed/33zFrqwhKOI" title="Use IBM Bob with custom Specification Driven Development"></iframe></div>
+<div class="video-body"><h3>Specification-driven development</h3><p>See how structured requirements and plans guide implementation instead of jumping directly from a prompt to code.</p><dl class="content-meta compact"><div><dt>Source</dt><dd>IBM Bob YouTube</dd></div><div><dt>Difficulty</dt><dd>Intermediate</dd></div><div><dt>Duration</dt><dd>~20 min learning block</dd></div><div><dt>Prerequisites</dt><dd>Basic Bob orientation</dd></div></dl><div class="video-meta"><span class="tag">Planning</span><span class="tag">SDLC</span></div></div>
+</article>
+<article class="video-card">
+<div class="video-frame"><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" loading="lazy" src="https://www.youtube-nocookie.com/embed/Yw0i4SfgRBk" title="AI first Product Development Lifecycle with Bob"></iframe></div>
+<div class="video-body"><h3>AI-first product development lifecycle</h3><p>An end-to-end view of using Bob across product ideation, design, engineering, and rapid prototyping.</p><dl class="content-meta compact"><div><dt>Source</dt><dd>IBM Bob YouTube</dd></div><div><dt>Difficulty</dt><dd>Beginner</dd></div><div><dt>Duration</dt><dd>~20 min learning block</dd></div><div><dt>Prerequisites</dt><dd>None; recommended for cross-functional teams</dd></div></dl><div class="video-meta"><span class="tag">Product teams</span><span class="tag">Executive view</span></div></div>
+</article>
+<article class="video-card">
+<div class="video-frame"><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" loading="lazy" src="https://www.youtube-nocookie.com/embed/5ZrHKpDDiT8" title="IBM Bob Tutorial and Demo: How to Use Modes in the IDE"></iframe></div>
+<div class="video-body"><h3>How to use modes in the IDE</h3><p>A practical demonstration of task-specific modes and how they shape Bob's behavior and permissions.</p><dl class="content-meta compact"><div><dt>Source</dt><dd>IBM Bob YouTube</dd></div><div><dt>Difficulty</dt><dd>Beginner</dd></div><div><dt>Duration</dt><dd>~20 min learning block</dd></div><div><dt>Prerequisites</dt><dd>Bob installed and basic interface familiarity</dd></div></dl><div class="video-meta"><span class="tag">Modes</span><span class="tag">Tutorial</span></div></div>
+</article>
+<article class="video-card">
+<div class="video-frame"><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" loading="lazy" src="https://www.youtube-nocookie.com/embed/MzmcVd2DJmk" title="Customize IBM Bob with Custom Modes, MCP Servers and Rules"></iframe></div>
+<div class="video-body"><h3>Customize modes, MCP, and rules</h3><p>Learn how team conventions, controlled tool access, and live external context can create repeatable workflows.</p><dl class="content-meta compact"><div><dt>Source</dt><dd>IBM Bob YouTube</dd></div><div><dt>Difficulty</dt><dd>Advanced</dd></div><div><dt>Duration</dt><dd>~30 min learning block</dd></div><div><dt>Prerequisites</dt><dd>Core workflow completed; familiarity with rules and MCP</dd></div></dl><div class="video-meta"><span class="tag">Customization</span><span class="tag">Advanced</span></div></div>
+</article>
+<article class="video-card">
+<div class="video-frame"><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" loading="lazy" src="https://www.youtube-nocookie.com/embed/5v8E-YbSPMo" title="IBM Bob for watsonx Orchestrate: Create MCP Tools and Agents"></iframe></div>
+<div class="video-body"><h3>Create MCP tools and agents</h3><p>Follow Bob from a plain-language request through planning, implementation, testing, validation, and deployment to watsonx Orchestrate.</p><dl class="content-meta compact"><div><dt>Source</dt><dd>IBM Bob YouTube</dd></div><div><dt>Difficulty</dt><dd>Advanced</dd></div><div><dt>Duration</dt><dd>~30 min learning block</dd></div><div><dt>Prerequisites</dt><dd>MCP fundamentals and watsonx Orchestrate access</dd></div></dl><div class="video-meta"><span class="tag">MCP</span><span class="tag">Agents</span><span class="tag">Advanced</span></div></div>
+</article>
+</div>
+</section>
+
+    <!-- EDITABLE: Client-priority tutorial use cases -->
+<section aria-labelledby="tutorials-title" class="section" id="tutorials">
+<div class="section-heading">
+<div><h2 id="tutorials-title">Practice with client-relevant use cases</h2></div>
+<p>These hands-on exercises come from the public IBM/bob-demo repository. Select tutorials by role, SDLC phase, or desired capability, and complete them in a disposable branch or sandbox.</p>
+</div>
+<div class="lab-grid">
+<article class="lab-card"><span class="lab-duration">IBM Bob</span><h3>Configure Bob modes</h3><p>Create a custom Playwright tester mode, connect an MCP server, and define a reusable role and permissions.</p><dl class="content-meta compact"><div><dt>Source</dt><dd>IBM/bob-demo GitHub</dd></div><div><dt>Difficulty</dt><dd>Intermediate</dd></div><div><dt>Duration</dt><dd>15 min</dd></div><div><dt>Prerequisites</dt><dd>Bob installed; basic familiarity with modes and a sample repository</dd></div></dl><div class="tag-row"><span class="tag">Software Engineer</span><span class="tag">Architect / Platform</span></div><a href="https://github.com/IBM/bob-demo/tree/main/bob-modes" rel="noopener" target="_blank">Open GitHub tutorial →</a></article>
+<article class="lab-card"><span class="lab-duration">IBM Bob</span><h3>Getting started with Skills</h3><p>Create a simple Bob Skill and learn the directory structure and SKILL.md pattern used for reusable task knowledge.</p><dl class="content-meta compact"><div><dt>Source</dt><dd>IBM/bob-demo GitHub</dd></div><div><dt>Difficulty</dt><dd>Beginner</dd></div><div><dt>Duration</dt><dd>10 min</dd></div><div><dt>Prerequisites</dt><dd>Bob installed and access to a sample repository</dd></div></dl><div class="tag-row"><span class="tag">Software Engineer</span><span class="tag">All technical roles</span></div><a href="https://github.com/IBM/bob-demo/tree/main/getting-started-skills" rel="noopener" target="_blank">Open GitHub tutorial →</a></article>
+<article class="lab-card"><span class="lab-duration">IBM Bob</span><h3>Use Java inside a Skill</h3><p>Extend a Bob Skill with executable Java using JBang and organize supporting scripts within the skill package.</p><dl class="content-meta compact"><div><dt>Source</dt><dd>IBM/bob-demo GitHub</dd></div><div><dt>Difficulty</dt><dd>Intermediate</dd></div><div><dt>Duration</dt><dd>10 min</dd></div><div><dt>Prerequisites</dt><dd>Getting Started with Skills; Java/JBang environment</dd></div></dl><div class="tag-row"><span class="tag">Software Engineer</span><span class="tag">Java Engineer</span></div><a href="https://github.com/IBM/bob-demo/tree/main/using-java-skills" rel="noopener" target="_blank">Open GitHub tutorial →</a></article>
+<article class="lab-card"><span class="lab-duration">DevOps</span><h3>Generate Ansible automation</h3><p>Use a custom Ansible Developer mode to generate a web-server playbook, configure the firewall, and convert the pattern into a reusable rule.</p><dl class="content-meta compact"><div><dt>Source</dt><dd>IBM/bob-demo GitHub</dd></div><div><dt>Difficulty</dt><dd>Intermediate</dd></div><div><dt>Duration</dt><dd>10 min</dd></div><div><dt>Prerequisites</dt><dd>Bob installed; basic Ansible and infrastructure knowledge</dd></div></dl><div class="tag-row"><span class="tag">DevOps / Platform</span><span class="tag">Software Engineer</span></div><a href="https://github.com/IBM/bob-demo/tree/main/ansible-devops" rel="noopener" target="_blank">Open GitHub tutorial →</a></article>
+<article class="lab-card"><span class="lab-duration">DevOps</span><h3>Generate a Tekton CI pipeline</h3><p>Use AGENTS.md and Skills to create a pipeline that clones, builds, packages, pushes, and scans an application container.</p><dl class="content-meta compact"><div><dt>Source</dt><dd>IBM/bob-demo GitHub</dd></div><div><dt>Difficulty</dt><dd>Advanced</dd></div><div><dt>Duration</dt><dd>15 min</dd></div><div><dt>Prerequisites</dt><dd>Bob installed; Kubernetes, containers, and Tekton basics</dd></div></dl><div class="tag-row"><span class="tag">DevOps / Platform</span><span class="tag">Architect</span></div><a href="https://github.com/IBM/bob-demo/tree/main/tekton-devops" rel="noopener" target="_blank">Open GitHub tutorial →</a></article>
+<article class="lab-card"><span class="lab-duration">Modernization</span><h3>Modernize EJB to Quarkus</h3><p>Transform an EJB application into a Quarkus application while preserving its business logic through a CDI bean and REST API.</p><dl class="content-meta compact"><div><dt>Source</dt><dd>IBM/bob-demo GitHub</dd></div><div><dt>Difficulty</dt><dd>Intermediate</dd></div><div><dt>Duration</dt><dd>10 min</dd></div><div><dt>Prerequisites</dt><dd>Java and basic Quarkus or modernization familiarity</dd></div></dl><div class="tag-row"><span class="tag">IBM Z / Legacy</span><span class="tag">Software Engineer</span></div><a href="https://github.com/IBM/bob-demo/tree/main/modernize-ejb-to-quarkus" rel="noopener" target="_blank">Open GitHub tutorial →</a></article>
+<article class="lab-card"><span class="lab-duration">Modernization</span><h3>Expose legacy Java through MCP</h3><p>Expose an existing legacy Kubernetes application as an MCP server without modifying the original codebase.</p><dl class="content-meta compact"><div><dt>Source</dt><dd>IBM/bob-demo GitHub</dd></div><div><dt>Difficulty</dt><dd>Advanced</dd></div><div><dt>Duration</dt><dd>20 min</dd></div><div><dt>Prerequisites</dt><dd>Legacy application access; Kubernetes and MCP basics</dd></div></dl><div class="tag-row"><span class="tag">IBM Z / Legacy</span><span class="tag">Architect</span></div><a href="https://github.com/IBM/bob-demo/tree/main/legacy-to-mcp" rel="noopener" target="_blank">Open GitHub tutorial →</a></article>
+<article class="lab-card"><span class="lab-duration">Knowledge transfer</span><h3>Automate architecture tests</h3><p>Have Bob understand a Spring Boot application's architecture and generate a Taikai JUnit test to preserve architectural rules across teams.</p><dl class="content-meta compact"><div><dt>Source</dt><dd>IBM/bob-demo GitHub</dd></div><div><dt>Difficulty</dt><dd>Intermediate</dd></div><div><dt>Duration</dt><dd>10 min</dd></div><div><dt>Prerequisites</dt><dd>Java/Spring and JUnit basics</dd></div></dl><div class="tag-row"><span class="tag">IBM Z / Legacy</span><span class="tag">Architect / Tech Lead</span></div><a href="https://github.com/IBM/bob-demo/tree/main/automated-architecture-taikai" rel="noopener" target="_blank">Open GitHub tutorial →</a></article>
+<article class="lab-card"><span class="lab-duration">Knowledge transfer</span><h3>Ground Bob with internal documentation</h3><p>Index framework or company documentation through Grounded Docs and MCP so Bob can generate code from current, organization-specific knowledge.</p><dl class="content-meta compact"><div><dt>Source</dt><dd>IBM/bob-demo GitHub</dd></div><div><dt>Difficulty</dt><dd>Advanced</dd></div><div><dt>Duration</dt><dd>10 min</dd></div><div><dt>Prerequisites</dt><dd>Approved documentation source and MCP access</dd></div></dl><div class="tag-row"><span class="tag">Business Analyst</span><span class="tag">IBM Z / Legacy</span><span class="tag">Architect</span></div><a href="https://github.com/IBM/bob-demo/tree/main/indexing-documentation" rel="noopener" target="_blank">Open GitHub tutorial →</a></article>
+<article class="lab-card"><span class="lab-duration">AI integration</span><h3>Add conversational AI to Quarkus</h3><p>Migrate a REST-based Quarkus application to support chat-style interactions through LangChain4j AI Services and Tools.</p><dl class="content-meta compact"><div><dt>Source</dt><dd>IBM/bob-demo GitHub</dd></div><div><dt>Difficulty</dt><dd>Intermediate</dd></div><div><dt>Duration</dt><dd>10 min</dd></div><div><dt>Prerequisites</dt><dd>Java, Quarkus, and basic AI-integration knowledge</dd></div></dl><div class="tag-row"><span class="tag">Software Engineer</span><span class="tag">AI Engineer</span></div><a href="https://github.com/IBM/bob-demo/tree/main/quarkus-ai-integration" rel="noopener" target="_blank">Open GitHub tutorial →</a></article>
+<article class="lab-card"><span class="lab-duration">Development tools</span><h3>Integrate Beads issue tracking</h3><p>Install and initialize the git-backed Beads issue tracker and connect it to Bob for agent-oriented task and dependency management.</p><dl class="content-meta compact"><div><dt>Source</dt><dd>IBM/bob-demo GitHub</dd></div><div><dt>Difficulty</dt><dd>Intermediate</dd></div><div><dt>Duration</dt><dd>10 min</dd></div><div><dt>Prerequisites</dt><dd>Git and permission to install or use Beads</dd></div></dl><div class="tag-row"><span class="tag">Software Engineer</span><span class="tag">Engineering Lead</span></div><a href="https://github.com/IBM/bob-demo/tree/main/beads" rel="noopener" target="_blank">Open GitHub tutorial →</a></article>
+</div>
+<div style="margin-top:22px"><a class="button ghost" href="https://github.com/IBM/bob-demo" rel="noopener" target="_blank">View the complete IBM/bob-demo repository ↗</a></div>
+</section>
+
+    <!-- EDITABLE: Resource catalogue and metadata -->
+<section aria-labelledby="library-title" class="section" id="library">
+<div class="section-heading">
+<div><h2 id="library-title">Find resources by feature, use case, or learning need</h2></div>
+<p>Search across official IBM documentation, tutorials, videos, and IBM/bob-demo exercises. Every card shows source, difficulty, expected learning time, and prerequisites.</p>
+</div>
+<div class="library-tools">
+<input aria-label="Search resources" class="search-box" id="resource-search" placeholder="Search SDLC phase, role, use case, feature, MCP, review…" type="search"/>
+<div aria-label="Resource filters" class="filters">
+<button class="filter-button active" data-filter="all">All resources</button>
+<button class="filter-button" data-filter="start">Start using Bob</button>
+<button class="filter-button" data-filter="workflow">Daily SDLC workflow</button>
+<button class="filter-button" data-filter="customize">Standardize the team</button>
+<button class="filter-button" data-filter="enterprise">Enterprise rollout</button>
+<button class="filter-button" data-filter="demo">Tutorial use cases</button>
+</div>
+</div>
+<div class="resource-grid" id="resource-grid">
+<article class="resource-card" data-category="start" data-search="welcome overview getting started install faq"><span class="kicker">Getting started</span><h3>Welcome to IBM Bob</h3><p>Core concepts, installation, tools, MCP, Bob Shell, and recommended first steps.</p><div class="resource-meta"><span><b>Source:</b> Official IBM Bob docs</span><span><b>Difficulty:</b> Beginner</span><span><b>Duration:</b> 10–30 min</span><span><b>Prerequisites:</b> Bob access; none for overview content</span></div><a href="https://bob.ibm.com/docs/ide" rel="noopener" target="_blank">Open documentation →</a></article>
+<article class="resource-card" data-category="start" data-search="init agents context repository onboarding"><span class="kicker">Getting started</span><h3>Start a project with /init and AGENTS.md</h3><p>Create persistent, mode-specific repository context for more efficient conversations.</p><div class="resource-meta"><span><b>Source:</b> Official IBM Bob docs</span><span><b>Difficulty:</b> Beginner</span><span><b>Duration:</b> 10–30 min</span><span><b>Prerequisites:</b> Bob access; none for overview content</span></div><a href="https://bob.ibm.com/docs/ide/tutorials/start-a-project" rel="noopener" target="_blank">Open tutorial →</a></article>
+<article class="resource-card" data-category="start" data-search="prompt task instruction effective"><span class="kicker">Getting started</span><h3>Write effective prompts</h3><p>Structure clear requests with context, constraints, expected outcomes, and validation.</p><div class="resource-meta"><span><b>Source:</b> Official IBM Bob docs</span><span><b>Difficulty:</b> Beginner</span><span><b>Duration:</b> 10–30 min</span><span><b>Prerequisites:</b> Bob access; none for overview content</span></div><a href="https://bob.ibm.com/docs/ide/tutorials/write-effective-prompts" rel="noopener" target="_blank">Open tutorial →</a></article>
+<article class="resource-card" data-category="workflow" data-search="modes plan agent ask persona permissions"><span class="kicker">Workflow</span><h3>Modes</h3><p>Use specialized task personas and access levels for planning, execution, and learning.</p><div class="resource-meta"><span><b>Source:</b> Official IBM Bob docs</span><span><b>Difficulty:</b> Beginner–Intermediate</span><span><b>Duration:</b> 15–45 min</span><span><b>Prerequisites:</b> Bob installed and a safe repository</span></div><a href="https://bob.ibm.com/docs/ide/features/modes" rel="noopener" target="_blank">Open documentation →</a></article>
+<article class="resource-card" data-category="workflow" data-search="literate coding natural language inline diff"><span class="kicker">Workflow</span><h3>Literate coding</h3><p>Write natural-language instructions directly in source files and review inline diffs.</p><div class="resource-meta"><span><b>Source:</b> Official IBM Bob docs</span><span><b>Difficulty:</b> Beginner–Intermediate</span><span><b>Duration:</b> 15–45 min</span><span><b>Prerequisites:</b> Bob installed and a safe repository</span></div><a href="https://bob.ibm.com/docs/ide/features/literate-coding" rel="noopener" target="_blank">Open documentation →</a></article>
+<article class="resource-card" data-category="workflow" data-search="code actions quick fixes explanation refactor"><span class="kicker">Workflow</span><h3>Code actions</h3><p>Access contextual explanations, fixes, and refactoring from the editor.</p><div class="resource-meta"><span><b>Source:</b> Official IBM Bob docs</span><span><b>Difficulty:</b> Beginner–Intermediate</span><span><b>Duration:</b> 15–45 min</span><span><b>Prerequisites:</b> Bob installed and a safe repository</span></div><a href="https://bob.ibm.com/docs/ide/features/code-actions" rel="noopener" target="_blank">Open documentation →</a></article>
+<article class="resource-card" data-category="workflow" data-search="review findings branches github issue quality"><span class="kicker">Workflow</span><h3>Code reviews</h3><p>Review branch differences, identify potential issues, and validate changes before commit.</p><div class="resource-meta"><span><b>Source:</b> Official IBM Bob docs</span><span><b>Difficulty:</b> Beginner–Intermediate</span><span><b>Duration:</b> 15–45 min</span><span><b>Prerequisites:</b> Bob installed and a safe repository</span></div><a href="https://bob.ibm.com/docs/ide/features/code-reviews" rel="noopener" target="_blank">Open documentation →</a></article>
+<article class="resource-card" data-category="workflow" data-search="bob tips complexity maintainability technical debt"><span class="kicker">Workflow</span><h3>Bob tips</h3><p>Detect complexity and maintainability issues while coding and receive refactoring guidance.</p><div class="resource-meta"><span><b>Source:</b> Official IBM Bob docs</span><span><b>Difficulty:</b> Beginner–Intermediate</span><span><b>Duration:</b> 15–45 min</span><span><b>Prerequisites:</b> Bob installed and a safe repository</span></div><a href="https://bob.ibm.com/docs/ide/features/bob-tips" rel="noopener" target="_blank">Open documentation →</a></article>
+<article class="resource-card" data-category="workflow" data-search="llm code review slash review tutorial"><span class="kicker">Workflow</span><h3>Perform an LLM code review</h3><p>A hands-on IBM tutorial using Bob's built-in review workflow.</p><div class="resource-meta"><span><b>Source:</b> IBM Think tutorial</span><span><b>Difficulty:</b> Beginner–Intermediate</span><span><b>Duration:</b> 15–45 min</span><span><b>Prerequisites:</b> Bob installed and a safe repository</span></div><a href="https://www.ibm.com/think/tutorials/llm-code-review" rel="noopener" target="_blank">Open tutorial →</a></article>
+<article class="resource-card" data-category="workflow" data-search="documentation architect github repository"><span class="kicker">Workflow</span><h3>Generate code documentation</h3><p>Create a documentation-focused custom mode and analyze documentation gaps.</p><div class="resource-meta"><span><b>Source:</b> IBM Think tutorial</span><span><b>Difficulty:</b> Beginner–Intermediate</span><span><b>Duration:</b> 15–45 min</span><span><b>Prerequisites:</b> Bob installed and a safe repository</span></div><a href="https://www.ibm.com/think/tutorials/ai-code-documentation-ibm-bob" rel="noopener" target="_blank">Open tutorial →</a></article>
+<article class="resource-card" data-category="customize" data-search="custom modes persona permissions yaml"><span class="kicker">Customize</span><h3>Custom modes</h3><p>Tailor roles, instructions, permissions, and project-specific workflows.</p><div class="resource-meta"><span><b>Source:</b> Official IBM Bob docs</span><span><b>Difficulty:</b> Intermediate</span><span><b>Duration:</b> 30–60 min</span><span><b>Prerequisites:</b> Core workflow completed and team standards identified</span></div><a href="https://bob.ibm.com/docs/ide/configuration/custom-modes" rel="noopener" target="_blank">Open documentation →</a></article>
+<article class="resource-card" data-category="customize" data-search="rules standards conventions team version control"><span class="kicker">Customize</span><h3>Custom rules</h3><p>Apply coding standards and workflow constraints automatically across conversations.</p><div class="resource-meta"><span><b>Source:</b> Official IBM Bob docs</span><span><b>Difficulty:</b> Intermediate</span><span><b>Duration:</b> 30–60 min</span><span><b>Prerequisites:</b> Core workflow completed and team standards identified</span></div><a href="https://bob.ibm.com/docs/ide/configuration/rules" rel="noopener" target="_blank">Open documentation →</a></article>
+<article class="resource-card" data-category="customize" data-search="skills reusable recipe workflow checklist template"><span class="kicker">Customize</span><h3>Skills</h3><p>Create reusable instruction sets with supporting files for specialized tasks.</p><div class="resource-meta"><span><b>Source:</b> Official IBM Bob docs</span><span><b>Difficulty:</b> Intermediate</span><span><b>Duration:</b> 30–60 min</span><span><b>Prerequisites:</b> Core workflow completed and team standards identified</span></div><a href="https://bob.ibm.com/docs/ide/features/skills" rel="noopener" target="_blank">Open documentation →</a></article>
+<article class="resource-card" data-category="customize" data-search="standardize behavior rules team"><span class="kicker">Customize</span><h3>Standardize Bob's behavior</h3><p>A tutorial for version-controlled project rules and repeatable team behavior.</p><div class="resource-meta"><span><b>Source:</b> Official IBM Bob docs</span><span><b>Difficulty:</b> Intermediate</span><span><b>Duration:</b> 30–60 min</span><span><b>Prerequisites:</b> Core workflow completed and team standards identified</span></div><a href="https://bob.ibm.com/docs/ide/tutorials/standardize-bobs-behavior" rel="noopener" target="_blank">Open tutorial →</a></article>
+<article class="resource-card" data-category="enterprise" data-search="mcp model context protocol tools external integration"><span class="kicker">Enterprise</span><h3>Understanding MCP</h3><p>Learn how the protocol connects Bob to compatible external tools and services.</p><div class="resource-meta"><span><b>Source:</b> Official IBM Bob docs</span><span><b>Difficulty:</b> Advanced</span><span><b>Duration:</b> 30–120 min</span><span><b>Prerequisites:</b> Approved sandbox, security guidance, and relevant platform access</span></div><a href="https://bob.ibm.com/docs/ide/configuration/mcp/understanding-mcp" rel="noopener" target="_blank">Open documentation →</a></article>
+<article class="resource-card" data-category="enterprise" data-search="mcp configure manage server integration"><span class="kicker">Enterprise</span><h3>Using MCP in Bob</h3><p>Configure, manage, and use MCP servers within the Bob environment.</p><div class="resource-meta"><span><b>Source:</b> Official IBM Bob docs</span><span><b>Difficulty:</b> Advanced</span><span><b>Duration:</b> 30–120 min</span><span><b>Prerequisites:</b> Approved sandbox, security guidance, and relevant platform access</span></div><a href="https://bob.ibm.com/docs/ide/configuration/mcp/mcp-in-bob" rel="noopener" target="_blank">Open documentation →</a></article>
+<article class="resource-card" data-category="enterprise" data-search="security delegated access oauth token audit mcp"><span class="kicker">Enterprise</span><h3>Security guidance</h3><p>Review access, credentials, MCP boundaries, approvals, and responsible-use practices.</p><div class="resource-meta"><span><b>Source:</b> Official IBM Bob docs</span><span><b>Difficulty:</b> Advanced</span><span><b>Duration:</b> 30–120 min</span><span><b>Prerequisites:</b> Approved sandbox, security guidance, and relevant platform access</span></div><a href="https://bob.ibm.com/docs/ide/security/bob-security-guidance" rel="noopener" target="_blank">Open documentation →</a></article>
+<article class="resource-card" data-category="enterprise" data-search="agents watsonx orchestrate mcp tools deployment"><span class="kicker">Enterprise</span><h3>Build agents with Bob and watsonx Orchestrate</h3><p>Build, test, import, and verify MCP tools and an agent end to end.</p><div class="resource-meta"><span><b>Source:</b> IBM Developer</span><span><b>Difficulty:</b> Advanced</span><span><b>Duration:</b> 30–120 min</span><span><b>Prerequisites:</b> Approved sandbox, security guidance, and relevant platform access</span></div><a href="https://developer.ibm.com/tutorials/build-agents-mcp-tools-watsonx-orchestrate-using-bob/" rel="noopener" target="_blank">Open tutorial →</a></article>
+<article class="resource-card" data-category="enterprise" data-search="app connect integration enterprise patterns deploy"><span class="kicker">Enterprise</span><h3>Build integration projects faster</h3><p>Generate, validate, deploy, and test enterprise integration code with App Connect.</p><div class="resource-meta"><span><b>Source:</b> IBM Developer</span><span><b>Difficulty:</b> Advanced</span><span><b>Duration:</b> 30–120 min</span><span><b>Prerequisites:</b> Approved sandbox, security guidance, and relevant platform access</span></div><a href="https://developer.ibm.com/tutorials/accelerate-integration-development-app-connect-ibm-bob/" rel="noopener" target="_blank">Open tutorial →</a></article>
+<article class="resource-card" data-category="enterprise" data-search="secure coding vault secrets governance mcp gateway"><span class="kicker">Enterprise</span><h3>Secure coding with Vault and MCP Gateway</h3><p>Eliminate hardcoded secrets and design governed access into development workflows.</p><div class="resource-meta"><span><b>Source:</b> IBM Developer</span><span><b>Difficulty:</b> Advanced</span><span><b>Duration:</b> 30–120 min</span><span><b>Prerequisites:</b> Approved sandbox, security guidance, and relevant platform access</span></div><a href="https://developer.ibm.com/tutorials/secure-coding-bob-vault-mcp-gateway/" rel="noopener" target="_blank">Open tutorial →</a></article>
+<article class="resource-card" data-category="enterprise" data-search="modernize node js express legacy application"><span class="kicker">Enterprise</span><h3>Modernize a Node.js application</h3><p>Apply Bob to understand and modernize an existing application.</p><div class="resource-meta"><span><b>Source:</b> Official IBM Bob docs</span><span><b>Difficulty:</b> Advanced</span><span><b>Duration:</b> 30–120 min</span><span><b>Prerequisites:</b> Approved sandbox, security guidance, and relevant platform access</span></div><a href="https://bob.ibm.com/docs/ide/tutorials/modernize-nodejs-express-api" rel="noopener" target="_blank">Open tutorial →</a></article>
+<article class="resource-card" data-category="demo" data-search="github demos catalogue tutorials use cases repository"><span class="kicker">GitHub demos</span><h3>IBM Bob demo repository</h3><p>Browse all public, bite-sized Bob tutorials covering DevOps, modernization, knowledge transfer, AI integration, tools, modes, and skills.</p><div class="resource-meta"><span><b>Source:</b> IBM/bob-demo GitHub</span><span><b>Difficulty:</b> All levels</span><span><b>Duration:</b> Catalogue</span><span><b>Prerequisites:</b> Bob installed plus tutorial-specific tools</span></div><a href="https://github.com/IBM/bob-demo" rel="noopener" target="_blank">Open repository →</a></article>
+<article class="resource-card" data-category="demo" data-search="ansible devops playbook firewall rule platform"><span class="kicker">GitHub demos</span><h3>Ansible DevOps</h3><p>Generate Ansible playbooks and convert the pattern into a reusable Bob rule.</p><div class="resource-meta"><span><b>Source:</b> IBM/bob-demo GitHub</span><span><b>Difficulty:</b> Intermediate</span><span><b>Duration:</b> 10 min</span><span><b>Prerequisites:</b> Bob installed plus tutorial-specific tools</span></div><a href="https://github.com/IBM/bob-demo/tree/main/ansible-devops" rel="noopener" target="_blank">Open tutorial →</a></article>
+<article class="resource-card" data-category="demo" data-search="tekton devops ci pipeline agents skills security scan"><span class="kicker">GitHub demos</span><h3>Tekton DevOps</h3><p>Generate a CI pipeline using AGENTS.md and task-specific Skills.</p><div class="resource-meta"><span><b>Source:</b> IBM/bob-demo GitHub</span><span><b>Difficulty:</b> Advanced</span><span><b>Duration:</b> 15 min</span><span><b>Prerequisites:</b> Bob installed plus tutorial-specific tools</span></div><a href="https://github.com/IBM/bob-demo/tree/main/tekton-devops" rel="noopener" target="_blank">Open tutorial →</a></article>
+<article class="resource-card" data-category="demo" data-search="modernize modernization ejb quarkus legacy rest"><span class="kicker">GitHub demos</span><h3>Modernize EJB to Quarkus</h3><p>Preserve legacy business logic while moving an EJB workload to Quarkus.</p><div class="resource-meta"><span><b>Source:</b> IBM/bob-demo GitHub</span><span><b>Difficulty:</b> Intermediate</span><span><b>Duration:</b> 10 min</span><span><b>Prerequisites:</b> Bob installed plus tutorial-specific tools</span></div><a href="https://github.com/IBM/bob-demo/tree/main/modernize-ejb-to-quarkus" rel="noopener" target="_blank">Open tutorial →</a></article>
+<article class="resource-card" data-category="demo" data-search="architecture tests taikai junit legacy knowledge transfer"><span class="kicker">GitHub demos</span><h3>Automated architecture tests</h3><p>Understand an application architecture and generate tests that preserve its rules.</p><div class="resource-meta"><span><b>Source:</b> IBM/bob-demo GitHub</span><span><b>Difficulty:</b> Intermediate</span><span><b>Duration:</b> 10 min</span><span><b>Prerequisites:</b> Bob installed plus tutorial-specific tools</span></div><a href="https://github.com/IBM/bob-demo/tree/main/automated-architecture-taikai" rel="noopener" target="_blank">Open tutorial →</a></article>
+<article class="resource-card" data-category="demo" data-search="grounded docs internal documentation indexing mcp knowledge transfer business analyst"><span class="kicker">GitHub demos</span><h3>Grounded internal documentation</h3><p>Provide current company and framework knowledge to Bob through an MCP documentation service.</p><div class="resource-meta"><span><b>Source:</b> IBM/bob-demo GitHub</span><span><b>Difficulty:</b> Advanced</span><span><b>Duration:</b> 10 min</span><span><b>Prerequisites:</b> Bob installed plus tutorial-specific tools</span></div><a href="https://github.com/IBM/bob-demo/tree/main/indexing-documentation" rel="noopener" target="_blank">Open tutorial →</a></article>
+<article class="resource-card" data-category="demo" data-search="quarkus ai langchain4j chat integration"><span class="kicker">GitHub demos</span><h3>Quarkus AI integration</h3><p>Add chat-style interactions to a REST application with LangChain4j.</p><div class="resource-meta"><span><b>Source:</b> IBM/bob-demo GitHub</span><span><b>Difficulty:</b> Intermediate</span><span><b>Duration:</b> 10 min</span><span><b>Prerequisites:</b> Bob installed plus tutorial-specific tools</span></div><a href="https://github.com/IBM/bob-demo/tree/main/quarkus-ai-integration" rel="noopener" target="_blank">Open tutorial →</a></article>
+<article class="resource-card" data-category="demo" data-search="legacy java mcp server modernization z engineer"><span class="kicker">GitHub demos</span><h3>Legacy to MCP</h3><p>Expose an existing legacy application through MCP without changing its original code.</p><div class="resource-meta"><span><b>Source:</b> IBM/bob-demo GitHub</span><span><b>Difficulty:</b> Advanced</span><span><b>Duration:</b> 20 min</span><span><b>Prerequisites:</b> Bob installed plus tutorial-specific tools</span></div><a href="https://github.com/IBM/bob-demo/tree/main/legacy-to-mcp" rel="noopener" target="_blank">Open tutorial →</a></article>
+<article class="resource-card" data-category="demo" data-search="beads issue tracking agent task dependencies"><span class="kicker">GitHub demos</span><h3>Beads integration</h3><p>Connect git-backed issue tracking to Bob for agent-oriented task management.</p><div class="resource-meta"><span><b>Source:</b> IBM/bob-demo GitHub</span><span><b>Difficulty:</b> Intermediate</span><span><b>Duration:</b> 10 min</span><span><b>Prerequisites:</b> Bob installed plus tutorial-specific tools</span></div><a href="https://github.com/IBM/bob-demo/tree/main/beads" rel="noopener" target="_blank">Open tutorial →</a></article>
+<article class="resource-card" data-category="demo" data-search="bob modes playwright mcp role permissions"><span class="kicker">GitHub demos</span><h3>Bob modes</h3><p>Create a custom mode, MCP connection, role definition, and permissions.</p><div class="resource-meta"><span><b>Source:</b> IBM/bob-demo GitHub</span><span><b>Difficulty:</b> Intermediate</span><span><b>Duration:</b> 15 min</span><span><b>Prerequisites:</b> Bob installed plus tutorial-specific tools</span></div><a href="https://github.com/IBM/bob-demo/tree/main/bob-modes" rel="noopener" target="_blank">Open tutorial →</a></article>
+<article class="resource-card" data-category="demo" data-search="skills getting started skill md reusable"><span class="kicker">GitHub demos</span><h3>Getting started with Skills</h3><p>Create a first reusable Bob Skill and learn the standard skill layout.</p><div class="resource-meta"><span><b>Source:</b> IBM/bob-demo GitHub</span><span><b>Difficulty:</b> Beginner</span><span><b>Duration:</b> 10 min</span><span><b>Prerequisites:</b> Bob installed plus tutorial-specific tools</span></div><a href="https://github.com/IBM/bob-demo/tree/main/getting-started-skills" rel="noopener" target="_blank">Open tutorial →</a></article>
+<article class="resource-card" data-category="demo" data-search="java skills jbang script reusable"><span class="kicker">GitHub demos</span><h3>Using Java with Skills</h3><p>Execute Java inside a Bob Skill using JBang and supporting scripts.</p><div class="resource-meta"><span><b>Source:</b> IBM/bob-demo GitHub</span><span><b>Difficulty:</b> Intermediate</span><span><b>Duration:</b> 10 min</span><span><b>Prerequisites:</b> Bob installed plus tutorial-specific tools</span></div><a href="https://github.com/IBM/bob-demo/tree/main/using-java-skills" rel="noopener" target="_blank">Open tutorial →</a></article>
+</div>
+<div class="empty-state" id="empty-state">No resources match your search. Try a broader term or select “All.”</div>
+</section>
+<section aria-labelledby="adoption-title" class="section">
+<div class="governance">
+<div>
+<h2 id="adoption-title">Prepare for client enterprise rollout</h2>
+<p>The final objective is not only individual proficiency. Customer engineering teams should be ready to scale Bob with explicit access, standards, support, governance, and measurable outcomes.</p>
+<a class="button blue" href="https://bob.ibm.com/docs/ide/security/bob-security-guidance" rel="noopener" target="_blank">Review security guidance ↗</a>
+</div>
+<div class="checklist">
+<div class="check-item">Define approved users, repositories, data classes, models, and MCP servers.</div>
+<div class="check-item">Document human approval points for code changes, external actions, and production delivery.</div>
+<div class="check-item">Version-control AGENTS.md, rules, modes, skills, templates, and ownership information.</div>
+<div class="check-item">Establish onboarding, champion support, escalation, and content-review processes.</div>
+<div class="check-item">Measure active adoption, cycle time, quality, rework, review effort, and modernization throughput.</div>
+</div>
+</div>
+</section>
+</main>
+<footer>
+<div class="footer-inner">
+<p>This client-specific Bob Academy consolidates publicly available IBM, GitHub, and YouTube learning resources for customer engineering enablement. Adapt the academy name, prerequisites, internal links, and governance requirements for the client environment.</p>
+<div class="footer-links"><a href="https://bob.ibm.com/" rel="noopener" target="_blank">IBM Bob</a><a href="https://www.youtube.com/@ibm-bob" rel="noopener" target="_blank">YouTube channel</a></div>
+</div>
+</footer>
+<script>
+    const roleButtons = [...document.querySelectorAll('.role-button')];
+    const rolePanels = [...document.querySelectorAll('.role-panel')];
+
+    roleButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        roleButtons.forEach((item) => item.setAttribute('aria-selected', 'false'));
+        rolePanels.forEach((panel) => panel.hidden = true);
+        button.setAttribute('aria-selected', 'true');
+        document.getElementById(button.getAttribute('aria-controls')).hidden = false;
+      });
+    });
+
+    const searchInput = document.getElementById('resource-search');
+    const filterButtons = [...document.querySelectorAll('.filter-button')];
+    const resourceCards = [...document.querySelectorAll('.resource-card')];
+    const emptyState = document.getElementById('empty-state');
+    let activeFilter = 'all';
+
+    function updateResources() {
+      const term = searchInput.value.trim().toLowerCase();
+      let visible = 0;
+      resourceCards.forEach((card) => {
+        const categoryMatch = activeFilter === 'all' || card.dataset.category === activeFilter;
+        const text = `${card.dataset.search} ${card.textContent}`.toLowerCase();
+        const searchMatch = !term || text.includes(term);
+        card.hidden = !(categoryMatch && searchMatch);
+        if (!card.hidden) visible += 1;
+      });
+      emptyState.style.display = visible ? 'none' : 'block';
+    }
+
+    filterButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        activeFilter = button.dataset.filter;
+        filterButtons.forEach((item) => item.classList.toggle('active', item === button));
+        updateResources();
+      });
+    });
+    searchInput.addEventListener('input', updateResources);
+  </script>
+</body>
+</html>
